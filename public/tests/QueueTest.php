@@ -55,4 +55,26 @@ class QueueTest extends TestCase
         $this->assertEquals('first', static::$queue->pop());
     }
 
+    public function testMaxNumberOfItemsCanBeAdded()
+    {
+        for ($i = 0; $i < Queue::MAX_ITEMS; $i++) {
+            static::$queue->push($i);
+        }
+
+        $this->assertEquals(Queue::MAX_ITEMS, static::$queue->getCount());
+    }
+
+    public function testExceptionThrownAddingAnItemToAFullQueue()
+    {
+        for ($i = 0; $i < Queue::MAX_ITEMS; $i++) {
+            static::$queue->push($i);
+        }
+
+        $this->expectException(QueueException::class);
+
+        $this->expectExceptionMessage("Queue is full");
+
+        static::$queue->push("wafer thin mint");
+    }
+
 }
