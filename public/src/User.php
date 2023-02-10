@@ -1,32 +1,27 @@
 <?php
 
-/**
- * User
- *
- * A user of the system
- */
 class User
 {
+    public string $first_name = "";
 
-    /**
-     * First name
-     * @var string
-     */
-    public $first_name;
+    public string $surname = "";
 
-    /**
-     * Last name
-     * @var string
-     */
-    public $surname;
+    public string $email = "";
 
-    /**
-     * Get the user's full name from their first name and surname
-     *
-     * @return string The user's full name
-     */
-    public function getFullName()
+    protected Mailer $mailer;
+
+    public function setMailer(Mailer $mailer): void
+    {
+        $this->mailer = $mailer;
+    }
+
+    public function getFullName(): string
     {
         return trim("$this->first_name $this->surname");
+    }
+
+    public function notify(string $message): bool
+    {
+        return $this->mailer->sendMessage($this->email, $message);
     }
 }
