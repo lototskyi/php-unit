@@ -20,7 +20,7 @@ class User
         return trim("$this->first_name $this->surname");
     }
 
-    public function notify(string $message): bool
+    public function notify(string $message): ?bool
     {
         return $this->mailer->sendMessage($this->email, $message);
     }
