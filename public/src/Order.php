@@ -25,7 +25,7 @@ class Order
      *
      * @return void
      */
-    public function __construct( $gateway)
+    public function __construct(PaymentGateway $gateway)
     {
         $this->gateway = $gateway;
     }
