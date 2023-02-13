@@ -24,10 +24,27 @@ class ItemTest extends TestCase
         $this->assertIsInt($item->getID());
     }
 
-//    public function testTokenIsAString()
-//    {
-//        $item = new ItemChild;
-//
-//        $this->assertIsString($item->getToken());
-//    }
+    public function testTokenIsAString()
+    {
+        $reflector = new ReflectionClass(Item::class);
+
+        $method = $reflector->getMethod('getToken');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->item);
+
+        $this->assertIsString($result);
+    }
+
+    public function testPrefixedTokenStartsWithPrefix()
+    {
+        $reflector = new ReflectionClass(Item::class);
+
+        $method = $reflector->getMethod('getPrefixedToken');
+        $method->setAccessible(true);
+
+        $result = $method->invokeArgs($this->item, ['example']);
+
+        $this->assertStringStartsWith('example', $result);
+    }
 }
