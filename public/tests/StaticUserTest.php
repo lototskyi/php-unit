@@ -5,17 +5,21 @@ use PHPUnit\Framework\TestCase;
 
 class StaticUserTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        Mockery::close();
+    }
+
     public function testNotifyReturnsTrue()
     {
         $user = new StaticUser('dave@example.com');
 
-        //[StaticMailer::class, 'send'] - real clallable
+        $mock = Mockery::mock('alias:StaticMailer');
 
-        $user->setMailerCallable(function() {
-            echo "mocked";
-
-            return true;
-        });
+        $mock->shouldReceive('send')
+             ->once()
+             ->with($user->email, 'Hello!')
+             ->andReturn(true);
 
         $this->assertTrue($user->notify('Hello!'));
     }

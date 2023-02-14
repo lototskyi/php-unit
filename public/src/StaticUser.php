@@ -14,8 +14,6 @@ class StaticUser
      */
     public $email;
 
-    protected $mailer_callable;
-
     /**
      * Constructor
      *
@@ -28,11 +26,6 @@ class StaticUser
         $this->email = $email;
     }
 
-    public function setMailerCallable(callable $mailer_callable)
-    {
-        $this->mailer_callable = $mailer_callable;
-    }
-
     /**
      * Send the user a message
      *
@@ -42,6 +35,6 @@ class StaticUser
      */
     public function notify(string $message)
     {
-        return call_user_func($this->mailer_callable, $this->email, $message);
+        return StaticMailer::send($this->email, $message);
     }
 }
